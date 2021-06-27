@@ -3,6 +3,7 @@ package br.com.alura.ceep.ui.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +35,9 @@ public class FormularioNotaActivity extends AppCompatActivity {
             EditText descricao = findViewById(R.id.formulario_nota_descricao);
 
             Nota notaCriada = new Nota(titulo.getText().toString(), descricao.getText().toString());
-            new NotaDAO().insere(notaCriada);
+            Intent resultadoInsercao = new Intent();
+            resultadoInsercao.putExtra("nota", notaCriada);
+            setResult(2, resultadoInsercao);
             finish();
         }
         return super.onOptionsItemSelected(item);
