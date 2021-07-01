@@ -16,7 +16,7 @@ import br.com.alura.ceep.R;
 import br.com.alura.ceep.dao.NotaDAO;
 import br.com.alura.ceep.model.Nota;
 import br.com.alura.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
-import br.com.alura.ceep.ui.recyclerview.adapter.OnItemClickListener;
+import br.com.alura.ceep.ui.recyclerview.adapter.listener.OnItemClickListener;
 
 import static br.com.alura.ceep.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
 import static br.com.alura.ceep.ui.activity.NotaActivityConstantes.CODIGO_REQUISICAO_INSERE_NOTA;
@@ -50,6 +50,9 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     private List<Nota> pegaTodasNotas() {
         NotaDAO dao = new NotaDAO();
+        for(int i = 0; i < 10; i++){
+            dao.insere(new Nota("Título " + (i + 1), "Descrição" + (i + 1)));
+        }
         return dao.todos();
     }
 
@@ -95,8 +98,8 @@ public class ListaNotasActivity extends AppCompatActivity {
         listaNotas.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick() {
-                Toast.makeText(ListaNotasActivity.this, "viewholder na activity", Toast.LENGTH_SHORT).show();
+            public void onItemClick(Nota nota) {
+                Toast.makeText(ListaNotasActivity.this, nota.getTitulo(), Toast.LENGTH_SHORT).show();
             }
         });
     }
