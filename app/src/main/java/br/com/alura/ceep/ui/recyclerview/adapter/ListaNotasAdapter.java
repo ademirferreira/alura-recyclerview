@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +20,15 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
 
     private final List<Nota> notas;
     private final Context context;
+    private OnItemClickListener onItemClickListener;
 
     public ListaNotasAdapter(Context context, List<Nota> notas){
         this.notas = notas;
         this.context = context;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -56,6 +62,12 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             super(itemView);
             titulo = itemView.findViewById(R.id.item_nota_titulo);
             descricao = itemView.findViewById(R.id.item_nota_descricao);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick();
+                }
+            });
         }
 
         public void vincula(Nota nota){
