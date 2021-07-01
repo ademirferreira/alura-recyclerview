@@ -58,12 +58,17 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if(isResultadoComNota(requestCode, resultCode, data)){
             assert data != null;
             Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
             adiciona(notaRecebida);
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 2 && resultCode == CODIGO_RESULTADO_NOTA_CRIADA && temNota(data)){
+            Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
+            Toast.makeText(this, notaRecebida.getTitulo(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void adiciona(Nota nota) {
@@ -99,7 +104,9 @@ public class ListaNotasActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(Nota nota) {
-                Toast.makeText(ListaNotasActivity.this, nota.getTitulo(), Toast.LENGTH_SHORT).show();
+                Intent abreFormularioComNota = new Intent(ListaNotasActivity.this, FormularioNotaActivity.class);
+                abreFormularioComNota.putExtra(CHAVE_NOTA, nota);
+                startActivityForResult(abreFormularioComNota, 2);
             }
         });
     }
