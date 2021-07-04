@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +16,6 @@ import br.com.alura.ceep.R;
 import br.com.alura.ceep.dao.NotaDAO;
 import br.com.alura.ceep.model.Nota;
 import br.com.alura.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
-import br.com.alura.ceep.ui.recyclerview.adapter.listener.OnItemClickListener;
 import br.com.alura.ceep.ui.recyclerview.helper.callback.NotaItemTouchHelperCallback;
 
 import static br.com.alura.ceep.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
@@ -44,9 +42,7 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     private void configuraBotaoInsereNota() {
         TextView botaoInsereNota = findViewById(R.id.lista_notas_insere_nota);
-        botaoInsereNota.setOnClickListener(v -> {
-            vaiParaFormularioNotaActivityInsere();
-        });
+        botaoInsereNota.setOnClickListener(v -> vaiParaFormularioNotaActivityInsere());
     }
 
     private void vaiParaFormularioNotaActivityInsere() {
@@ -56,9 +52,6 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     private List<Nota> pegaTodasNotas() {
         NotaDAO dao = new NotaDAO();
-        for(int i = 0; i < 10; i++){
-            dao.insere(new Nota("Título " + (i + 1), "Descrição" + (i + 1)));
-        }
         return dao.todos();
     }
 
@@ -76,12 +69,11 @@ public class ListaNotasActivity extends AppCompatActivity {
 
         if(isResultadoAlteraNota(requestCode, data)){
             if(resultadoOk(resultCode)){
+                assert data != null;
                 Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
                 int posicaoRecebida = data.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
                 if(isPosicaoValida(posicaoRecebida)){
                     altera(notaRecebida, posicaoRecebida);
-                }else{
-                    Toast.makeText(this, "Ocorreu um problema na alteração da nota", Toast.LENGTH_SHORT).show();
                 }
             }
         }
