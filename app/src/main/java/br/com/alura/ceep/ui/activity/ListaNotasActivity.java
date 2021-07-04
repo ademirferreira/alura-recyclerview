@@ -128,6 +128,10 @@ public class ListaNotasActivity extends AppCompatActivity {
     private void configuraRecyclerView(List<Nota> todasNotas) {
         RecyclerView listaNotas = findViewById(R.id.lista_notas_recyclerview);
         configuraAdapter(todasNotas, listaNotas);
+        configuraItemTouchHelper(listaNotas);
+    }
+
+    private void configuraItemTouchHelper(RecyclerView listaNotas) {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter));
         itemTouchHelper.attachToRecyclerView(listaNotas);
     }
@@ -135,12 +139,7 @@ public class ListaNotasActivity extends AppCompatActivity {
     private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaNotas) {
         adapter = new ListaNotasAdapter(this, todasNotas);
         listaNotas.setAdapter(adapter);
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(Nota nota, int posicao) {
-                vaiParaFormularioNotaActivityAltera(nota, posicao);
-            }
-        });
+        adapter.setOnItemClickListener(this::vaiParaFormularioNotaActivityAltera);
     }
 
     private void vaiParaFormularioNotaActivityAltera(Nota nota, int posicao) {
